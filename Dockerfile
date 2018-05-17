@@ -1,4 +1,4 @@
-FROM node:latest
+FROM node:8
 
 LABEL version "1.0"
 LABEL description="Probot app to keep GitHub forks in sync with their upstream"
