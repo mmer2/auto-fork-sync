@@ -1,0 +1,4 @@
+branch_blacklist:
+  - branch
+  - another branch
+merge_strategy: rebase
