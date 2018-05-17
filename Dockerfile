@@ -7,6 +7,7 @@ MAINTAINER Jared Murrell <jared@murrell-lab.com>
 ## These files are copied separately to allow updates
 ## to the image to be as small as possible
 COPY --chown=node:node package.json /opt/auto-fork-sync/
+COPY --chown=node:node package-lock.json /opt/auto-fork-sync/
 COPY --chown=node:node index.js /opt/auto-fork-sync/
 ## You should edit .env.example and save it before building this image
 ## Future updates to this Dockerfile _may_ move this over to
