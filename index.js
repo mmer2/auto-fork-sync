@@ -13,7 +13,7 @@ class AutoForkSyncRobotHandler {
 
   async handleCreate (context) {
     this.robot.log(context)
-    const config = await context.config('auto-fork-sync.yaml', {branch_blacklist: [], merge_strategy: 'rebase'})
+    const config = await context.config('auto-fork-sync.yml', {branch_blacklist: [], merge_strategy: 'rebase'})
     const github = context.github
     const payload = context.payload
     const forks = await this.getListOfForks(payload.repository, github)
@@ -29,7 +29,7 @@ class AutoForkSyncRobotHandler {
 
   async handlePush (context) {
     this.robot.log(context)
-    const config = await context.config('auto-fork-sync.yaml', {branch_blacklist: [], merge_strategy: 'rebase'})
+    const config = await context.config('auto-fork-sync.yml', {branch_blacklist: [], merge_strategy: 'rebase'})
     const github = context.github
     const payload = context.payload
     const forks = await this.getListOfForks(payload.repository, github)
