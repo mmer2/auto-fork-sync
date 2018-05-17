@@ -10,14 +10,9 @@ a GitHub App built with [probot](https://github.com/probot/probot) that automati
 
 This plugin requires these **Permissions & events** for the GitHub App:
 
-- Issues - **Read & Write**
-  - [ ] Check the box for **Issue comment** events
-  - [ ] Check the box for **Issues** events
-- Pull requests - **Read & Write**
-  - [ ] Check the box for **Pull request** events
-  - [ ] Check the box for **Pull request review** events
-  - [ ] Check the box for **Pull request review comment** events
-- Single File - **Read-only**
+- [ ] Pull requests - **Read & Write**
+- [ ] Repsoitory contents **Read & Write**
+- [ ] Single File - **Read-only**
   - Path: `.github/auto-fork-sync.yml`
   
 ## Running the app
