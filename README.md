@@ -21,12 +21,9 @@ These events are all recommended so that the synchronization process happens mor
 
 | Event | Description | Required |
 | :---: | :---: | :---: |
-| `Label` | Label created, edited or deleted | No |
-| `Delete` | Branch or tag deleted | No |
-| `Pull request` | Pull request opened, closed, reopened, edited, assigned,<br>unassigned, review requested, review request removed,<br>labeled, unlabeled, synchronized | No |
 | `Push` | Git push to a repository | Yes |
-| `Release` | Release published in a repository | No |
-| `Fork` | Repository forked | No |
+| `Create` | Branch or tag created | Yes |
+
 
 ## Installing the app
 
@@ -39,7 +36,7 @@ These events are all recommended so that the synchronization process happens mor
 5. Select the permissions
 ![github-app-permissions](https://user-images.githubusercontent.com/865381/40181728-c852754c-59b7-11e8-9ebf-68d77bbd4eec.png)
 6. Select the events to subscribe to
-![github-app-events](https://user-images.githubusercontent.com/865381/40181741-d3daba32-59b7-11e8-8748-8ec779d96fff.png)
+![github-app-events](https://user-images.githubusercontent.com/865381/40240036-a08c203e-5a85-11e8-9930-8f27387de402.png)
 7. If this app will be used by other users and orgs, be sure to allow this to run on _Any account_
 ![github-app-make-public](https://user-images.githubusercontent.com/865381/40181781-edd6ee38-59b7-11e8-897e-d6bb2271e309.png)
 8. Generate a `private key`
