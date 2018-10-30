@@ -79,3 +79,13 @@ docker build -t github/auto-fork-sync .
 ```bash
 docker run -ditp 3000:3000 --restart unless-stopped --name auto-fork-sync github/auto-fork-sync
 ```
+
+### Running with Forever
+You can use the `Forever` node package as well.
+```bash
+forever start \
+    -l .forever/forever.log \
+    -o .forever/out.log \
+    -e .forever/err.log
+    .forever/afs.json
+```
