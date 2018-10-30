@@ -3,5 +3,6 @@
     "spinSleepTime": 1000,
     "append": true,
     "watch": true,
-    "script": "index.js"
+    "script": "index.js",
+    "args": ["--port", "3000"]
 }
