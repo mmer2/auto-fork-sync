@@ -81,11 +81,13 @@ docker run -ditp 3000:3000 --restart unless-stopped --name auto-fork-sync github
 ```
 
 ### Running with Forever
-You can use the `Forever` node package as well.
+You can use the `Forever` node package as well. (This assumes you've installed the app to `/opt/auto-fork-sync`)
 ```bash
-forever start \
-    -l .forever/forever.log \
-    -o .forever/out.log \
-    -e .forever/err.log
-    .forever/afs.json
+forever start --minUptime 1000 \
+    --spinSleepTime 1000 \
+    --workingDir /opt/auto-fork-sync \
+    -a -w -l /opt/auto-fork-sync/.forever/forever.log \
+    -o /opt/auto-fork-sync/.forever/out.log \
+    -e /opt/auto-fork-sync/.forever/err.log \
+    -c "npm start" ./
 ```
