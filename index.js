@@ -119,7 +119,7 @@ class AutoForkSyncRobotHandler {
       )} to sha ${sha}`
     );
     try {
-      const force = true; //This will overwrite all changes in the target
+      const force = false; //This will overwrite all changes in the target
       const payload = {
         owner: repo.owner,
         repo: repo.repo,
