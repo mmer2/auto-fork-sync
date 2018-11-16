@@ -1,6 +1,6 @@
 module.exports = robot => {
   const handler = new AutoForkSyncRobotHandler(robot);
-  robot.log.info("Yay, the app was loaded!");
+  robot.log.info("Auto-fork-sync Started...");
   robot.log.debug(robot);
   robot.on("create", async context => handler.handleCreate(context));
   robot.on("push", async context => handler.handlePush(context));
@@ -27,7 +27,11 @@ class AutoForkSyncRobotHandler {
       }
       const parentRepo = getRepoDict(payload.repository);
       for (const fork of forks) {
-        await this.createChildBranch(branchName, parentRepo, fork);
+        try {
+          await this.createChildBranch(branchName, parentRepo, fork);
+        } catch(e) {
+          this.robot.log.error(e);
+        }
       }
     } catch (err) {
       this.robot.log.error(err);
@@ -52,7 +56,11 @@ class AutoForkSyncRobotHandler {
       }
       const parentRepo = getRepoDict(payload.repository);
       for (const fork of forks) {
-        await this.updateChildBranch(branchName, parentHash, parentRepo, fork);
+        try {
+          await this.updateChildBranch(branchName, parentHash, parentRepo, fork);
+        } catch(e) {
+          this.robot.log.error(e);
+        }
       }
     } catch (err) {
       this.robot.log.error(err);
@@ -102,7 +110,7 @@ class AutoForkSyncRobotHandler {
         merge_method: 'merge'
       });
       if (mergeResult.data.merged) {
-        this.robot.log.info("Hooray! The merge worked!");
+        this.robot.log.info("Successfully merged...");
         this.robot.log.info(mergeResult);
       } else {
         this.robot.log.error(mergeResult);
@@ -167,7 +175,7 @@ class AutoForkSyncRobotHandler {
           // TODO: Try creating it!
         }
       }
-      return undefined;
+      //return undefined;
     }
   }
 
