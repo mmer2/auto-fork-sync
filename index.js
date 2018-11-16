@@ -136,7 +136,7 @@ class AutoForkSyncRobotHandler {
         force: force
       };
       const result = await github.gitdata.updateReference(payload);
-      this.robot.log.info(result);
+      this.robot.log.debug(result);
     } catch (err) {
       this.robot.log.error(err);
     }
@@ -159,10 +159,16 @@ class AutoForkSyncRobotHandler {
       const result = await github.pullRequests.create(payload);
       return result.data.number;
     } catch (err) {
-      this.robot.log.error("Caught error");
-      this.robot.log.error(err);
       const errors = JSON.parse(err.message).errors;
-      this.robot.log.error(errors);
+      if (
+        errors[0].message == `A pull request already exists for ${parentRepo.owner}:${branchName}.`
+      ) {
+        this.robot.log.warn(errors[0].message)
+      } else {
+        this.robot.log.error("Caught error");
+        //this.robot.log.error(err);
+        this.robot.log.error(errors);
+      }
       for (const error of errors) {
         if (
           error.resource === "PullRequest" &&
