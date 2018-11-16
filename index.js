@@ -209,7 +209,8 @@ class AutoForkSyncRobotHandler {
       const { owner, repo } = getRepoDict(repository);
       const result = await github.repos.getForks({
         owner,
-        repo
+        repo,
+        per_page: 100
       });
       return result.data.map(getRepoDict);
     } catch (err) {
