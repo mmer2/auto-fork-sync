@@ -1,6 +1,21 @@
 # Probot: GitHub Fork Sync
 
-[![npm version](https://img.shields.io/npm/v/probot.svg)](https://www.npmjs.com/package/probot) 
+[![npm version](https://img.shields.io/npm/v/probot.svg)](https://www.npmjs.com/package/probot)
+
+- [Probot: GitHub Fork Sync](#probot-github-fork-sync)
+	- [GitHub Permissions](#github-permissions)
+		- [Permissions](#permissions)
+		- [Events](#events)
+	- [Installing the app](#installing-the-app)
+	- [Running the app](#running-the-app)
+		- [Running in native NodeJS](#running-in-native-nodejs)
+- [Install dependencies](#install-dependencies)
+- [Start the bot](#start-the-bot)
+	- [Running in Docker](#running-in-docker)
+	- [Running with Forever](#running-with-forever)
+	- [Running with Systemd](#running-with-systemd)
+- [do chdir before running the service](#do-chdir-before-running-the-service)
+- [limit CPU and RAM quota for our service](#limit-cpu-and-ram-quota-for-our-service)
 
 ## GitHub Permissions
 
@@ -90,4 +105,45 @@ forever start --minUptime 1000 \
     -o /opt/auto-fork-sync/.forever/out.log \
     -e /opt/auto-fork-sync/.forever/err.log \
     -c "npm start" ./
+```
+
+### Running with Systemd
+You can also run this service as a daemon. This sample assumes that the app is installed in `/opt/auto-fork-sync`.
+
+Create a service file in `/etc/systemd/system/auto-fork-sync.service` and add the following contents
+
+```bash
+[Unit]
+Description=GitHub Probot - Auto Fork Sync
+After=network-online.target
+
+[Service]
+PIDFile=/opt/auto-fork-sync/auto-fork-sync.pid
+User=node
+Group=node
+Restart=on-failure
+# do chdir before running the service
+WorkingDirectory=/opt/auto-fork-sync/
+ExecStart=/usr/bin/npm start
+KillSignal=SIGQUIT
+# limit CPU and RAM quota for our service
+CPUAccounting=true
+CPUQuota=10%
+MemoryAccounting=true
+MemoryLimit=250M
+
+[Install]
+WantedBy=multi-user.target
+```
+
+Once you've created the file you will be able to `enable`, `disable`, `start`, `stop`, `restart` and check the `status` of the application.
+
+```bash
+systemctl status auto-fork-sync.service
+```
+```bash
+systemctl enable auto-fork-sync.service
+```
+```bash
+systemctl start auto-fork-sync.service
 ```
