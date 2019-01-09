@@ -1,0 +1,21 @@
+[Unit]
+Description=GitHub Probot - Auto Fork Sync
+After=network-online.target
+
+[Service]
+PIDFile=/opt/auto-fork-sync/auto-fork-sync.pid
+User=node
+Group=node
+Restart=on-failure
+# do chdir before running the service
+WorkingDirectory=/opt/auto-fork-sync/
+ExecStart=/usr/bin/npm start
+KillSignal=SIGQUIT
+# limit CPU and RAM quota for our service
+CPUAccounting=true
+CPUQuota=10%
+MemoryAccounting=true
+MemoryLimit=250M
+
+[Install]
+WantedBy=multi-user.target
