@@ -4,7 +4,7 @@ module.exports = robot => {
   robot.log.debug(robot);
   robot.on("create", async context => handler.handleCreate(context));
   robot.on("push", async context => handler.handlePush(context));
-  robot.on("pull", async context => handler.handlePull(context));
+  robot.on("pull.closed", async context => handler.handlePull(context));
 };
 
 class AutoForkSyncRobotHandler {
@@ -17,7 +17,7 @@ class AutoForkSyncRobotHandler {
     try {
       const config = await context.config("auto-fork-sync.yml", {
         branch_blacklist: [],
-        merge_strategy: "rebase"
+        merge_strategy: "merge"
       });
       const github = context.github;
       const payload = context.payload;
@@ -28,10 +28,12 @@ class AutoForkSyncRobotHandler {
       } 
       const parentRepo = getRepoDict(payload.repository);
       for (const fork of forks) {
-        try {
-          await this.createChildBranch(branchName, parentRepo, fork);
-        } catch(e){
-          this.robot.log.error(e);
+        if(payload.pull_request.merged){
+          try {
+            await this.updateChildBranch(branchName, parentRepo, fork);
+          } catch(e){
+            this.robot.log.error(e);
+          }
         }
       }
     } catch (err){
@@ -44,7 +46,7 @@ class AutoForkSyncRobotHandler {
     try {
       const config = await context.config("auto-fork-sync.yml", {
         branch_blacklist: [],
-        merge_strategy: "rebase"
+        merge_strategy: "merge"
       });
       const github = context.github;
       const payload = context.payload;
@@ -71,7 +73,7 @@ class AutoForkSyncRobotHandler {
     try {
       const config = await context.config("auto-fork-sync.yml", {
         branch_blacklist: [],
-        merge_strategy: "rebase"
+        merge_strategy: "merge"
       });
       const github = context.github;
       const payload = context.payload;
