@@ -4,11 +4,39 @@ module.exports = robot => {
   robot.log.debug(robot);
   robot.on("create", async context => handler.handleCreate(context));
   robot.on("push", async context => handler.handlePush(context));
+  robot.on("pull", async context => handler.handlePull(context));
 };
 
 class AutoForkSyncRobotHandler {
   constructor(robot) {
     this.robot = robot;
+  }
+
+  async handlePull(context) {
+    this.robot.log.debug(context);
+    try {
+      const config = await context.config("auto-fork-sync.yml", {
+        branch_blacklist: [],
+        merge_strategy: "rebase"
+      });
+      const github = context.github;
+      const payload = context.payload;
+      const forks = await this.getListOfForks(payload.repository, github);
+      const branchName = payload.ref.substring(11);
+      if (config.branch_blacklist.includes(branchName)) {
+        return;
+      } 
+      const parentRepo = getRepoDict(payload.repository);
+      for (const fork of forks) {
+        try {
+          await this.createChildBranch(branchName, parentRepo, fork);
+        } catch(e){
+          this.robot.log.error(e);
+        }
+      }
+    } catch (err){
+      this.robot.log.error(err);
+    }
   }
 
   async handleCreate(context) {
